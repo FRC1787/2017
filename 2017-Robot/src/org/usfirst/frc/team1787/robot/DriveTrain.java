@@ -55,9 +55,9 @@ public class DriveTrain {
 		
 	}
 	
-	public void setGear(double slider_setting) {
+	public void setGear() {
 		
-		if (slider_setting < 0.5)
+		if (joystick_right.getRawAxis(Constants.AXIS_SLIDER) < 0.5)
 			sol_shifter.set(Constants.SHIFTR_LOW);
 		else
 			sol_shifter.set(Constants.SHIFTER_HIGH);

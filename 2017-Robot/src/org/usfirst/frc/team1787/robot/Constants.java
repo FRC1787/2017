@@ -68,5 +68,17 @@ public final class Constants {
 	
 	public static final double SPEED_PICKUP_ARM_INTAKE = 1;
 	
+	// Winch
 	
+	public static final double SPEED_WINCH_CLIMB = .5;
+	public static final double SPEED_WINCH_UNCLIMB = .25;
+	
+	
+	
+	
+	///
+	// Miscellaneous
+	///
+	
+	public static final int AXIS_SLIDER = 3;
 }
