@@ -30,6 +30,27 @@ public final class Constants {
 	public static final int MOTOR_WINCH = 9;
 	
 	
+	
+	///
+	// Pneumatics
+	///
+	
+	// Shifter
+	public static final int PCM_SHIFTER = 0;
+	
+	// Shifter states
+	public static final boolean SHIFTER_HIGH = true;
+	public static final boolean SHIFTR_LOW = false;
+	
+	// Pickup Arm
+	public static final int PCM_PICKUP_ARM = 1;
+	
+	// Pickup Arm states
+	public static final boolean PICKUP_ARM_DEPLOYED = true;
+	public static final boolean PICKUP_ARM_RETRACTED = false;
+	
+	
+	
 	///
 	// Joysticks
 	///
@@ -38,12 +59,14 @@ public final class Constants {
 	public static final int JOYSTICK_LEFT = 1;
 	
 	
+	
 	///
-	// Shifter
+	// Speed Constants
 	///
 	
-	public static final boolean SHIFTER_HIGH = true;
-	public static final boolean SHIFTR_LOW = false;
+	// Pickup Arm
+	
+	public static final double SPEED_PICKUP_ARM_INTAKE = 1;
 	
 	
 }

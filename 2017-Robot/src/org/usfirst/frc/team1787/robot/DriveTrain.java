@@ -27,7 +27,7 @@ public class DriveTrain {
 	public DriveTrain(int motor_front_right_id, int motor_rear_right_id,
 					  int motor_front_left_id, int motor_rear_left_id,
 					  int joystick_right_id, int joystick_left_id,
-					  int shifter_id)
+					  int sol_shifter_id)
 	{
 		this.talon_front_right = new CANTalon(motor_front_right_id);
 		this.talon_rear_right = new CANTalon(motor_rear_right_id);
@@ -37,7 +37,7 @@ public class DriveTrain {
 		this.joystick_right = new Joystick(joystick_right_id);
 		this.joystick_left = new Joystick(joystick_left_id);
 		
-		this.sol_shifter = new Solenoid(shifter_id);
+		this.sol_shifter = new Solenoid(sol_shifter_id);
 		
 		this.driver = new RobotDrive(talon_front_left, talon_rear_left,
 									 talon_front_right, talon_rear_right);
