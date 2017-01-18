@@ -27,4 +27,13 @@ public final class Constants {
 	// Winch
 	public static final int MOTOR_WINCH = 9;
 	
+	
+	///
+	// Joysticks
+	///
+	
+	public static final int JOYSTICK_RIGHT = 0;
+	public static final int JOYSTICK_LEFT = 1;
+	
+	
 }
