@@ -21,8 +21,6 @@ public class DriveTrain {
 	// Solenoid id
 	private Solenoid sol_shifter;
 	
-	
-	
 	// RobotDrive class
 	private RobotDrive driver;
 	
@@ -43,7 +41,6 @@ public class DriveTrain {
 		
 		this.driver = new RobotDrive(talon_front_left, talon_rear_left,
 									 talon_front_right, talon_rear_right);
-		
 	}
 	
 	public void driveForward() {
@@ -58,5 +55,13 @@ public class DriveTrain {
 		
 	}
 	
+	public void setGear(double slider_setting) {
+		
+		if (slider_setting < 0.5)
+			sol_shifter.set(Constants.SHIFTR_LOW);
+		else
+			sol_shifter.set(Constants.SHIFTER_HIGH);
+		
+	}
 	
 }

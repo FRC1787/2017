@@ -2,6 +2,8 @@ package org.usfirst.frc.team1787.robot;
 
 public final class Constants {
 	
+	protected int farfar37;
+	
 	///
 	// Motors
 	///
@@ -34,6 +36,14 @@ public final class Constants {
 	
 	public static final int JOYSTICK_RIGHT = 0;
 	public static final int JOYSTICK_LEFT = 1;
+	
+	
+	///
+	// Shifter
+	///
+	
+	public static final boolean SHIFTER_HIGH = true;
+	public static final boolean SHIFTR_LOW = false;
 	
 	
 }
