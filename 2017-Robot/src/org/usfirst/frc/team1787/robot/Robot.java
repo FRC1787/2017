@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1787.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -12,10 +13,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	final String defaultAuto = "Default";
-	final String customAuto = "My Auto";
-	String autoSelected;
-	SendableChooser<String> chooser = new SendableChooser<>();
+	
+	Joystick joystick_right;
+	Joystick joystick_left;
+	
+	DriveTrain driveTrain;
+	PickupArm pickupArm;
+	Winch winch;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -23,28 +27,27 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		chooser.addDefault("Default Auto", defaultAuto);
-		chooser.addObject("My Auto", customAuto);
-		SmartDashboard.putData("Auto choices", chooser);
+		
+		// Create the joysticks
+		joystick_right = new Joystick(Constants.JOYSTICK_RIGHT_ID);
+		joystick_left = new Joystick(Constants.JOYSTICK_LEFT_ID);
+		
+		// Create the different mechanisms
+		driveTrain = new DriveTrain(Constants.MOTOR_DRIVE_FRONT_RIGHT, Constants.MOTOR_DRIVE_REAR_RIGHT,
+									Constants.MOTOR_DRIVE_FRONT_LEFT, Constants.MOTOR_DRIVE_REAR_LEFT,
+									Constants.PCM_SHIFTER);
+		
+		pickupArm = new PickupArm(Constants.PCM_PICKUP_ARM, Constants.MOTOR_PICKUP_ARM_SPINNER);
+		
+		winch = new Winch(Constants.MOTOR_WINCH);
+		
 	}
 
 	/**
-	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString line to get the auto name from the text box below the Gyro
-	 *
-	 * You can add additional auto modes by adding additional comparisons to the
-	 * switch structure below with additional strings. If using the
-	 * SendableChooser make sure to add them to the chooser code above as well.
+	 * This function is run when preparing for autonomous
 	 */
 	@Override
 	public void autonomousInit() {
-		autoSelected = chooser.getSelected();
-		// autoSelected = SmartDashboard.getString("Auto Selector",
-		// defaultAuto);
-		System.out.println("Auto selected: " + autoSelected);
 	}
 
 	/**
@@ -52,15 +55,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		switch (autoSelected) {
-		case customAuto:
-			// Put custom auto code here
-			break;
-		case defaultAuto:
-		default:
-			// Put default auto code here
-			break;
-		}
 	}
 
 	/**
@@ -68,6 +62,48 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		
+		///
+		// Drive Control
+		///
+		
+		// Drive with the joystick being pushed more
+		if (joystick_right.getMagnitude() > joystick_left.getMagnitude())
+			driveTrain.driveForwards(joystick_right);
+		else
+			driveTrain.driveBackwards(joystick_left);
+		
+		// Shifter
+		driveTrain.setGear(joystick_right.getRawAxis(Constants.AXIS_SLIDER));
+		
+		///
+		// Pickup Arm
+		///
+		
+		// Deploying and retracting
+		if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_PICKUP_ARM_DEPLOY))
+			pickupArm.deploy();
+		else if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_PICKUP_ARM_RETRACT))
+			pickupArm.retract();
+		
+		// Intake
+		if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_PICKUP_ARM_INAKE))
+			pickupArm.intake();
+		else
+			pickupArm.stopIntake();
+		
+		
+		///
+		// Winch
+		///
+		
+		if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_WINCH_CLIMB))
+			winch.climb();
+		else if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_WINCH_UNCLIMB))
+			winch.unclimb();
+		else
+			winch.stop();
+		
 	}
 
 	/**

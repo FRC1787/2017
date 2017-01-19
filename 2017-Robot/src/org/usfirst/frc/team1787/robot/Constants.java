@@ -10,12 +10,12 @@ public final class Constants {
 	
 	// Drive Train
 	public static final int MOTOR_DRIVE_FRONT_RIGHT = 1;
-	public static final int MOTOR_DRIVE_BACK_RIGHT = 2;
+	public static final int MOTOR_DRIVE_REAR_RIGHT = 2;
 	public static final int MOTOR_DRIVE_FRONT_LEFT = 3;
-	public static final int MOTOR_DRIVE_BACK_LEFT = 4;
+	public static final int MOTOR_DRIVE_REAR_LEFT = 4;
 	
 	// Pickup Arm Spinner
-	public static final int MOTOR_PICKUP_SPINNER = 5;
+	public static final int MOTOR_PICKUP_ARM_SPINNER = 5;
 	
 	// Feeder to shooter
 	public static final int MOTOR_FEEDER = 6;
@@ -55,9 +55,18 @@ public final class Constants {
 	// Joysticks
 	///
 	
-	public static final int JOYSTICK_RIGHT = 0;
-	public static final int JOYSTICK_LEFT = 1;
+	// Joystick id's
+	public static final int JOYSTICK_RIGHT_ID = 0;
+	public static final int JOYSTICK_LEFT_ID = 1;
 	
+	// Joystick values
+	
+	public static final int JOYSTICK_RIGHT_PICKUP_ARM_DEPLOY = 0;
+	public static final int JOYSTICK_RIGHT_PICKUP_ARM_RETRACT = 0;
+	public static final int JOYSTICK_RIGHT_PICKUP_ARM_INAKE = 0;
+	
+	public static final int JOYSTICK_RIGHT_WINCH_CLIMB = 0;
+	public static final int JOYSTICK_RIGHT_WINCH_UNCLIMB = 0;
 	
 	
 	///
