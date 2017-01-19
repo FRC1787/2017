@@ -13,7 +13,6 @@ public class PickupArm {
 	public PickupArm (int sol_deploy_id, int motor_spinner_id)
 	{
 		this.sol_deploy = new Solenoid(sol_deploy_id);
-		
 		this.talon_spinner = new CANTalon(motor_spinner_id);
 	}
 	
