@@ -2,17 +2,21 @@ package org.usfirst.frc.team1787.robot;
 
 import com.ctre.CANTalon;
 
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 
 public class PickupArm {
 
-	private Solenoid sol_deploy;
+	private DoubleSolenoid sol_deploy;
 	
 	private CANTalon talon_spinner;
 	
-	public PickupArm (int sol_deploy_id, int motor_spinner_id)
+	Compressor compressor;
+	
+	public PickupArm (int sol_deploy_id, int sol_retract_id, int motor_spinner_id)
 	{
-		this.sol_deploy = new Solenoid(sol_deploy_id);
+		this.sol_deploy = new DoubleSolenoid(sol_deploy_id, sol_retract_id);
 		this.talon_spinner = new CANTalon(motor_spinner_id);
 	}
 	

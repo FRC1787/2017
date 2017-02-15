@@ -11,7 +11,16 @@ public class Turret {
 		
 		this.talon_feeder = new CANTalon(motor_feeder_id);
 		this.talon_flywheel = new CANTalon(motor_flywheel_id);
-		
+	}
+	
+	public void spinTurret(double speed)
+	{
+		talon_feeder.set(speed);
+	}
+	
+	public void runFlywheel(double speed)
+	{
+		talon_flywheel.set(speed);
 	}
 	
 }

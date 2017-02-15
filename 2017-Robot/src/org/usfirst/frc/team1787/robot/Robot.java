@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1787.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -20,6 +21,9 @@ public class Robot extends IterativeRobot {
 	DriveTrain driveTrain;
 	PickupArm pickupArm;
 	Winch winch;
+	Turret turret;
+	
+	Compressor compressor;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -35,11 +39,16 @@ public class Robot extends IterativeRobot {
 		// Create the different mechanisms
 		driveTrain = new DriveTrain(Constants.MOTOR_DRIVE_FRONT_RIGHT, Constants.MOTOR_DRIVE_REAR_RIGHT,
 									Constants.MOTOR_DRIVE_FRONT_LEFT, Constants.MOTOR_DRIVE_REAR_LEFT,
-									Constants.PCM_SHIFTER);
+									Constants.PCM_SHIFTER_ID);
 		
-		pickupArm = new PickupArm(Constants.PCM_PICKUP_ARM, Constants.MOTOR_PICKUP_ARM_SPINNER);
+		pickupArm = new PickupArm(Constants.PCM_PICKUP_ARM_DEPLOYED_ID, Constants.PCM_PICKUP_ARM_RETRACTED_ID, Constants.MOTOR_PICKUP_ARM_SPINNER);
 		
 		winch = new Winch(Constants.MOTOR_WINCH);
+		
+		turret = new Turret(Constants.MOTOR_TURRET_ADJUST, Constants.MOTOR_FLYWHEEL);
+		
+		compressor = new Compressor(0);
+		compressor.setClosedLoopControl(true);
 		
 	}
 
@@ -104,6 +113,8 @@ public class Robot extends IterativeRobot {
 		else
 			winch.stop();
 		
+		
+		turret.spinTurret(joystick_right.getRawAxis(3));
 	}
 
 	/**
