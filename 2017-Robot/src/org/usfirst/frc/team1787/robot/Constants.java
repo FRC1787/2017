@@ -102,9 +102,25 @@ public final class Constants {
 	public static final int ENCODER_TURRET_SPIN_ID_B = 5;
 	
 	
+	
+	///
+	// Vision Targeting
+	///
+	
+	public static final double VISION_TURRET_ROTATION_SPEED_MAX = .5;
+	public static final double VISION_TURRET_ROTATION_SPEED_MIN = -.5;
+	
+	public static final double VISION_TOLERANCE_ANGLE = 5;
+	
+	public static final boolean VISION_CONTINUOUS = false;
+	
+	
+	
 	///
 	// Miscellaneous
 	///
 	
 	public static final int AXIS_SLIDER = 3;
+	
+	public static final int GYRO_ID = 0;
 }
