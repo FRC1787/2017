@@ -88,6 +88,19 @@ public final class Constants {
 	
 	
 	
+	///
+	// DIO
+	///
+	
+	public static final int ENCODER_DRIVE_RIGHT_ID_A = 0;
+	public static final int ENCODER_DRIVE_RIGHT_ID_B = 1;
+	
+	public static final int ENCODER_DRIVE_LEFT_ID_A = 2;
+	public static final int ENCODER_DRIVE_LEFT_ID_B = 3;
+	
+	public static final int ENCODER_TURRET_SPIN_ID_A = 4;
+	public static final int ENCODER_TURRET_SPIN_ID_B = 5;
+	
 	
 	///
 	// Miscellaneous

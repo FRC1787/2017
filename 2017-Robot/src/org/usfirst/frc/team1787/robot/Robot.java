@@ -23,7 +23,6 @@ public class Robot extends IterativeRobot {
 	Winch winch;
 	Turret turret;
 	
-	Compressor compressor;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -45,10 +44,7 @@ public class Robot extends IterativeRobot {
 		
 		winch = new Winch(Constants.MOTOR_WINCH);
 		
-		turret = new Turret(Constants.MOTOR_TURRET_ADJUST, Constants.MOTOR_FLYWHEEL);
-		
-		compressor = new Compressor(0);
-		compressor.setClosedLoopControl(true);
+		//turret = new Turret(Constants.MOTOR_TURRET_ADJUST, Constants.MOTOR_FLYWHEEL);
 		
 	}
 
@@ -114,7 +110,7 @@ public class Robot extends IterativeRobot {
 			winch.stop();
 		
 		
-		turret.spinTurret(joystick_right.getRawAxis(3));
+		//turret.spinTurret(joystick_right.getRawAxis(3));
 	}
 
 	/**
