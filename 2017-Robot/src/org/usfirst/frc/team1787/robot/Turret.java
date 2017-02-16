@@ -4,6 +4,7 @@ import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Turret {
 
@@ -22,7 +23,8 @@ public class Turret {
 		
 		this.gyro = new AnalogGyro(Constants.GYRO_ID);
 		
-		this.pidController = new PIDController(0, 0, 0, gyro, talon_turret_spinner);
+		this.pidController = new PIDController(Constants.VISION_P, Constants.VISION_I, Constants.VISION_D,
+											   Constants.VISION_F, gyro, talon_flywheel);
 		pidController.setOutputRange(Constants.VISION_TURRET_ROTATION_SPEED_MAX, Constants.VISION_TURRET_ROTATION_SPEED_MIN);
 		pidController.setAbsoluteTolerance(Constants.VISION_TOLERANCE_ANGLE);
 		pidController.setContinuous(Constants.VISION_CONTINUOUS);
@@ -39,5 +41,11 @@ public class Turret {
 		pidController.disable();
 	}
 	
+	
+	public void setSetpoint() {
+		
+		pidController.setSetpoint(gyro.getAngle() + SmartDashboard.getNumber(Constants.VISION_ERROR_STRING, 0));
+		
+	}
 	
 }

@@ -107,12 +107,19 @@ public final class Constants {
 	// Vision Targeting
 	///
 	
+	public static final double VISION_P = .02;
+	public static final double VISION_I = 0;
+	public static final double VISION_D = 0;
+	public static final double VISION_F = 0;
+	
 	public static final double VISION_TURRET_ROTATION_SPEED_MAX = .5;
 	public static final double VISION_TURRET_ROTATION_SPEED_MIN = -.5;
 	
 	public static final double VISION_TOLERANCE_ANGLE = 5;
 	
 	public static final boolean VISION_CONTINUOUS = false;
+	
+	public static final String VISION_ERROR_STRING = "ERROR_DEGREES_HORIZONTAL";
 	
 	
 	
