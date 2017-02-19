@@ -107,7 +107,7 @@ public final class Constants {
 	// Vision Targeting
 	///
 	
-	public static final double VISION_P = .02;
+	public static final double VISION_P = .01;
 	public static final double VISION_I = 0;
 	public static final double VISION_D = 0;
 	public static final double VISION_F = 0;

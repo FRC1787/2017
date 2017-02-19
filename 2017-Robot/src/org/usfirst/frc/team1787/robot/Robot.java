@@ -44,7 +44,7 @@ public class Robot extends IterativeRobot {
 		
 		winch = new Winch(Constants.MOTOR_WINCH);
 		
-		//turret = new Turret(Constants.MOTOR_TURRET_ADJUST, Constants.MOTOR_FLYWHEEL);
+		turret = new Turret(Constants.MOTOR_TURRET_FEEDER, Constants.MOTOR_TURRET_SPINNER, Constants.MOTOR_FLYWHEEL, Constants.GYRO_ID);
 		
 	}
 
@@ -67,11 +67,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		
+		turret.enableVisionTargeting();
+		turret.setSetpoint();
 		///
 		// Drive Control
 		///
-		
+		/*
 		// Drive with the joystick being pushed more
 		if (joystick_right.getMagnitude() > joystick_left.getMagnitude())
 			driveTrain.driveForwards(joystick_right);
@@ -109,7 +110,7 @@ public class Robot extends IterativeRobot {
 		else
 			winch.stop();
 		
-		
+		*/
 		//turret.spinTurret(joystick_right.getRawAxis(3));
 	}
 

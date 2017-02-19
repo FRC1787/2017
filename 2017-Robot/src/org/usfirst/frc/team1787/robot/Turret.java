@@ -2,7 +2,9 @@
 
 import com.ctre.CANTalon;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -11,7 +13,7 @@ public class Turret {
 	private CANTalon talon_feeder;
 	private CANTalon talon_turret_spinner;
 	private CANTalon talon_flywheel;
-	private AnalogGyro gyro;
+	private ADXRS450_Gyro gyro;
 	
 	private PIDController pidController;
 	
@@ -21,14 +23,16 @@ public class Turret {
 		this.talon_turret_spinner = new CANTalon(motor_turret_spinner_id);
 		this.talon_flywheel = new CANTalon(motor_flywheel_id);
 		
-		this.gyro = new AnalogGyro(Constants.GYRO_ID);
+		this.gyro = new ADXRS450_Gyro();
+		gyro.calibrate();
 		
 		this.pidController = new PIDController(Constants.VISION_P, Constants.VISION_I, Constants.VISION_D,
-											   Constants.VISION_F, gyro, talon_flywheel);
-		pidController.setOutputRange(Constants.VISION_TURRET_ROTATION_SPEED_MAX, Constants.VISION_TURRET_ROTATION_SPEED_MIN);
+											   Constants.VISION_F, gyro, talon_feeder);
+		//pidController.setOutputRange(Constants.VISION_TURRET_ROTATION_SPEED_MIN, Constants.VISION_TURRET_ROTATION_SPEED_MAX);
 		pidController.setAbsoluteTolerance(Constants.VISION_TOLERANCE_ANGLE);
 		pidController.setContinuous(Constants.VISION_CONTINUOUS);
 		pidController.disable();
+		
 		
 	}
 	
@@ -44,7 +48,7 @@ public class Turret {
 	
 	public void setSetpoint() {
 		
-		pidController.setSetpoint(gyro.getAngle() + SmartDashboard.getNumber(Constants.VISION_ERROR_STRING, 0));
+		pidController.setSetpoint(gyro.getAngle());
 		
 	}
 	
