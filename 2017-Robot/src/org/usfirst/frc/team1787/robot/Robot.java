@@ -105,10 +105,7 @@ public class Robot extends IterativeRobot {
 		
 		if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_WINCH_CLIMB))
 			winch.climb();
-		else
-			winch.stop();
-		
-		if(joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_WINCH_UNCLIMB))
+		else if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_WINCH_UNCLIMB))
 			winch.unclimb();
 		else
 			winch.stop();
