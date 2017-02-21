@@ -67,12 +67,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		turret.enableVisionTargeting();
-		turret.setSetpoint();
+		//turret.enableVisionTargeting();
+		//turret.setSetpoint();
 		///
 		// Drive Control
 		///
-		/*
+		
 		// Drive with the joystick being pushed more
 		if (joystick_right.getMagnitude() > joystick_left.getMagnitude())
 			driveTrain.driveForwards(joystick_right);
@@ -105,13 +105,30 @@ public class Robot extends IterativeRobot {
 		
 		if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_WINCH_CLIMB))
 			winch.climb();
-		else if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_WINCH_UNCLIMB))
+		else
+			winch.stop();
+		
+		if(joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_WINCH_UNCLIMB))
 			winch.unclimb();
 		else
 			winch.stop();
 		
-		*/
-		//turret.spinTurret(joystick_right.getRawAxis(3));
+	
+		///
+		// Turret
+		///
+		
+		if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_TURRET_FEEDER))
+			turret.spinFeeder();
+		else
+			turret.stopFeeder();
+		
+		if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_TURRET_FLYWHEEL))
+			turret.spinFlywheel();
+		else
+			turret.stopFlywheel();
+		
+		turret.turn(joystick_right.getRawAxis(Constants.JOYSTICK_RIGHT_TURRET_SPIN_AXIS));
 	}
 
 	/**

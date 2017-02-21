@@ -65,12 +65,17 @@ public final class Constants {
 	
 	// Joystick values
 	
-	public static final int JOYSTICK_RIGHT_PICKUP_ARM_DEPLOY = 2;
-	public static final int JOYSTICK_RIGHT_PICKUP_ARM_RETRACT = 3;
-	public static final int JOYSTICK_RIGHT_PICKUP_ARM_INAKE = 1;
+	public static final int JOYSTICK_RIGHT_PICKUP_ARM_DEPLOY = 0;
+	public static final int JOYSTICK_RIGHT_PICKUP_ARM_RETRACT = 0;
+	public static final int JOYSTICK_RIGHT_PICKUP_ARM_INAKE = 2;
 	
-	public static final int JOYSTICK_RIGHT_WINCH_CLIMB = 0;
-	public static final int JOYSTICK_RIGHT_WINCH_UNCLIMB = 0;
+	public static final int JOYSTICK_RIGHT_WINCH_CLIMB = 4;
+	public static final int JOYSTICK_RIGHT_WINCH_UNCLIMB = 3;
+	
+	public static final int JOYSTICK_RIGHT_TURRET_FLYWHEEL = 1;
+	public static final int JOYSTICK_RIGHT_TURRET_FEEDER = 1;
+	
+	public static final int JOYSTICK_RIGHT_TURRET_SPIN_AXIS = 2;
 	
 	
 	///
@@ -83,8 +88,8 @@ public final class Constants {
 	
 	// Winch
 	
-	public static final double SPEED_WINCH_CLIMB = .5;
-	public static final double SPEED_WINCH_UNCLIMB = -.25;
+	public static final double SPEED_WINCH_CLIMB = -1.0;
+	public static final double SPEED_WINCH_UNCLIMB = .5;
 	
 	
 	

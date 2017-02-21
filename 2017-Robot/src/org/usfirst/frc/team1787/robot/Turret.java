@@ -52,4 +52,35 @@ public class Turret {
 		
 	}
 	
+	public void spinFeeder() {
+		
+		talon_feeder.set(-1);
+		
+	}
+	
+	public void stopFeeder() {
+		
+		talon_feeder.set(0);
+		
+	}
+	
+	public void spinFlywheel() {
+		
+		// Positive to shoot
+		talon_flywheel.set(.8);
+		
+	}
+	
+	public void stopFlywheel() {
+		
+		talon_flywheel.set(0);
+		
+	}
+	
+	public void turn(double speed) {
+		
+		talon_turret_spinner.set(speed);
+		
+	}
+	
 }
