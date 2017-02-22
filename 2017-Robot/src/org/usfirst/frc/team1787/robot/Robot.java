@@ -3,6 +3,7 @@ package org.usfirst.frc.team1787.robot;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -62,13 +63,21 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 	}
 
+	
+	public void teleopInit() {
+		
+		turret.setFlywheelSpeed(SmartDashboard.getNumber("flywheel_speed", 0));
+		turret.setFeederSpeed(SmartDashboard.getNumber("feeder_speed", 0));
+		
+	}
+	
+	
 	/**
 	 * This function is called periodically during operator control
 	 */
 	@Override
 	public void teleopPeriodic() {
-		//turret.enableVisionTargeting();
-		//turret.setSetpoint();
+
 		///
 		// Drive Control
 		///
@@ -126,6 +135,14 @@ public class Robot extends IterativeRobot {
 			turret.stopFlywheel();
 		
 		turret.turn(joystick_right.getRawAxis(Constants.JOYSTICK_RIGHT_TURRET_SPIN_AXIS));
+		
+//		if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_VISION_ENABLE))
+//		{
+//			turret.enableVisionTargeting();
+//			turret.setSetpoint();
+//		}
+//		else
+//			turret.disableVisionTargeting();
 	}
 
 	/**
