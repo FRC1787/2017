@@ -1,11 +1,8 @@
 package org.usfirst.frc.team1787.robot;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Preferences;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,7 +19,9 @@ public class Robot extends IterativeRobot {
 	DriveTrain driveTrain;
 	PickupArm pickupArm;
 	Winch winch;
-	Turret turret;
+	Shooter shooter;
+	
+	Preferences prefs;
 	
 
 	/**
@@ -33,20 +32,23 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		
 		// Create the joysticks
-		joystick_right = new Joystick(Constants.JOYSTICK_RIGHT_ID);
-		joystick_left = new Joystick(Constants.JOYSTICK_LEFT_ID);
+		joystick_right = new Joystick(Constants.JOYSTICKS.JOYSTICK_RIGHT_ID);
+		joystick_left = new Joystick(Constants.JOYSTICKS.JOYSTICK_LEFT_ID);
 		
 		// Create the different mechanisms
-		driveTrain = new DriveTrain(Constants.MOTOR_DRIVE_FRONT_RIGHT, Constants.MOTOR_DRIVE_REAR_RIGHT,
-									Constants.MOTOR_DRIVE_FRONT_LEFT, Constants.MOTOR_DRIVE_REAR_LEFT,
-									Constants.PCM_SHIFTER_ID);
+		driveTrain = new DriveTrain(Constants.MOTORS.MOTOR_DRIVE_FRONT_RIGHT, Constants.MOTORS.MOTOR_DRIVE_REAR_RIGHT,
+									Constants.MOTORS.MOTOR_DRIVE_FRONT_LEFT, Constants.MOTORS.MOTOR_DRIVE_REAR_LEFT,
+									Constants.PNEUMATICS.PCM_SHIFTER_ID);
 		
-		pickupArm = new PickupArm(Constants.PCM_PICKUP_ARM_DEPLOYED_ID, Constants.PCM_PICKUP_ARM_RETRACTED_ID, Constants.MOTOR_PICKUP_ARM_SPINNER);
+		pickupArm = new PickupArm(Constants.PNEUMATICS.PCM_PICKUP_ARM_DEPLOYED_ID, Constants.PNEUMATICS.PCM_PICKUP_ARM_RETRACTED_ID, Constants.MOTORS.MOTOR_PICKUP_ARM_SPINNER);
 		
-		winch = new Winch(Constants.MOTOR_WINCH);
+		winch = new Winch(Constants.MOTORS.MOTOR_WINCH);
 		
-		turret = new Turret(Constants.MOTOR_TURRET_FEEDER, Constants.MOTOR_TURRET_SPINNER, Constants.MOTOR_FLYWHEEL, Constants.GYRO_ID);
+		shooter = new Shooter(Constants.MOTORS.MOTOR_SHOOTER_FEEDER, Constants.MOTORS.MOTOR_SHOOTER_TURRET, Constants.MOTORS.MOTOR_SHOOTER_FLYWHEEL, Constants.ANALOG.GYRO_ID);
 		
+		prefs = Preferences.getInstance();
+		
+		//shooter.setPID(prefs.getDouble("TURRET_HORIZONTAL_P", 0), prefs.getDouble("TURRET_HORIZONTAL_I", 0), prefs.getDouble("TURRET_HORIZONTAL_D", 0));
 	}
 
 	/**
@@ -66,8 +68,7 @@ public class Robot extends IterativeRobot {
 	
 	public void teleopInit() {
 		
-		turret.setFlywheelSpeed(SmartDashboard.getNumber("flywheel_speed", 0));
-		turret.setFeederSpeed(SmartDashboard.getNumber("feeder_speed", 0));
+
 		
 	}
 	
@@ -89,20 +90,20 @@ public class Robot extends IterativeRobot {
 			driveTrain.driveBackwards(joystick_left);
 		
 		// Shifter
-		driveTrain.setGear(joystick_right.getRawAxis(Constants.AXIS_SLIDER));
+		driveTrain.setGear(joystick_right.getRawAxis(Constants.MISC.AXIS_SLIDER));
 		
 		///
 		// Pickup Arm
 		///
 		
 		// Deploying and retracting
-		if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_PICKUP_ARM_DEPLOY))
+		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_PICKUP_ARM_DEPLOY))
 			pickupArm.deploy();
-		else if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_PICKUP_ARM_RETRACT))
+		else if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_PICKUP_ARM_RETRACT))
 			pickupArm.retract();
 		
 		// Intake
-		if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_PICKUP_ARM_INAKE))
+		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_PICKUP_ARM_INAKE))
 			pickupArm.intake();
 		else
 			pickupArm.stopIntake();
@@ -112,9 +113,9 @@ public class Robot extends IterativeRobot {
 		// Winch
 		///
 		
-		if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_WINCH_CLIMB))
+		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_WINCH_CLIMB))
 			winch.climb();
-		else if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_WINCH_UNCLIMB))
+		else if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_WINCH_UNCLIMB))
 			winch.unclimb();
 		else
 			winch.stop();
@@ -124,25 +125,25 @@ public class Robot extends IterativeRobot {
 		// Turret
 		///
 		
-		if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_TURRET_FEEDER))
+		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_TURRET_FEEDER))
 			turret.spinFeeder();
 		else
 			turret.stopFeeder();
 		
-		if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_TURRET_FLYWHEEL))
+		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_TURRET_FLYWHEEL))
 			turret.spinFlywheel();
 		else
 			turret.stopFlywheel();
 		
-		turret.turn(joystick_right.getRawAxis(Constants.JOYSTICK_RIGHT_TURRET_SPIN_AXIS));
+		//turret.turn(joystick_right.getRawAxis(Constants.JOYSTICK_RIGHT_TURRET_SPIN_AXIS));
 		
-//		if (joystick_right.getRawButton(Constants.JOYSTICK_RIGHT_VISION_ENABLE))
-//		{
-//			turret.enableVisionTargeting();
-//			turret.setSetpoint();
-//		}
-//		else
-//			turret.disableVisionTargeting();
+		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_VISION_ENABLE))
+		{
+			turret.enableVisionTargeting();
+			turret.setSetpoint();
+		}
+		else
+			turret.disableVisionTargeting();
 	}
 
 	/**

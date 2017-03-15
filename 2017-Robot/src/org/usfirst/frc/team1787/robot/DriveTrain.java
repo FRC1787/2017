@@ -61,9 +61,9 @@ public class DriveTrain {
 	public void setGear(double value) {
 		
 		if (value < 0.5)
-			sol_shifter.set(Constants.SHIFTR_LOW);
+			sol_shifter.set(Constants.PNEUMATICS.SHIFTR_LOW);
 		else
-			sol_shifter.set(Constants.SHIFTER_HIGH);
+			sol_shifter.set(Constants.PNEUMATICS.SHIFTER_HIGH);
 		
 	}
 	

@@ -25,7 +25,7 @@ public class PickupArm {
 	 */
 	public void deploy() {
 		
-		sol_deploy.set(Constants.PICKUP_ARM_DEPLOYED);
+		sol_deploy.set(Constants.PNEUMATICS.PICKUP_ARM_DEPLOYED);
 		
 	}
 	
@@ -34,7 +34,7 @@ public class PickupArm {
 	 */
 	public void retract() {
 		
-		sol_deploy.set(Constants.PICKUP_ARM_RETRACTED);
+		sol_deploy.set(Constants.PNEUMATICS.PICKUP_ARM_RETRACTED);
 		
 	}
 	
@@ -43,7 +43,7 @@ public class PickupArm {
 	 */
 	public void intake() {
 		
-		talon_spinner.set(Constants.SPEED_PICKUP_ARM_INTAKE);
+		talon_spinner.set(Constants.SPEEDS.SPEED_PICKUP_ARM_INTAKE);
 		
 	}
 	

@@ -17,7 +17,7 @@ public class Winch {
 	 */
 	public void climb() {
 		
-		talon_winch.set(Constants.SPEED_WINCH_CLIMB);
+		talon_winch.set(Constants.SPEEDS.SPEED_WINCH_CLIMB);
 		
 	}
 	
@@ -26,7 +26,7 @@ public class Winch {
 	 */
 	public void unclimb() {
 		
-		talon_winch.set(Constants.SPEED_WINCH_UNCLIMB);
+		talon_winch.set(Constants.SPEEDS.SPEED_WINCH_UNCLIMB);
 		
 	}
 	
