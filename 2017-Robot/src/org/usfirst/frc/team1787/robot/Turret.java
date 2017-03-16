@@ -71,4 +71,15 @@ public class Turret {
 	public void setPID(double p, double i, double d) {
 		pidController.setPID(p, i, d);
 	}
+	
+	public double getDistance() {
+	
+		double angle = SmartDashboard.getNumber(Constants.VISION.ANGLE_TO_TARGET_STRING, 1);
+		if (Math.tan(angle) != 0)
+			return Constants.VISION.TARGET_HEIGHT / Math.tan(angle);
+		else
+			return -1;
+		
+	}
+	
 }

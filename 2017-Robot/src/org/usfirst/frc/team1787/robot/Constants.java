@@ -160,6 +160,9 @@ public final class Constants {
 		public static final String TURRET_ALIGNMENT_ERROR_LABEL = "ERROR_DEGREES_HORIZONTAL";
 		
 		
+		public static final double TARGET_HEIGHT = 86;
+		public static final String ANGLE_TO_TARGET_STRING = "angle_to_target";
+		
 	}
 	
 	///
