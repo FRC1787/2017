@@ -1,8 +1,10 @@
 package org.usfirst.frc.team1787.robot;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -16,10 +18,13 @@ public class Robot extends IterativeRobot {
 	Joystick joystick_right;
 	Joystick joystick_left;
 	
+	VisionProcessing visionProcessing;
+	
 	DriveTrain driveTrain;
 	PickupArm pickupArm;
 	Winch winch;
 	Shooter shooter;
+	
 	
 	Preferences prefs;
 	
@@ -35,6 +40,8 @@ public class Robot extends IterativeRobot {
 		joystick_right = new Joystick(Constants.JOYSTICKS.JOYSTICK_RIGHT_ID);
 		joystick_left = new Joystick(Constants.JOYSTICKS.JOYSTICK_LEFT_ID);
 		
+		visionProcessing = new VisionProcessing();
+		
 		// Create the different mechanisms
 		driveTrain = new DriveTrain(Constants.MOTORS.MOTOR_DRIVE_FRONT_RIGHT, Constants.MOTORS.MOTOR_DRIVE_REAR_RIGHT,
 									Constants.MOTORS.MOTOR_DRIVE_FRONT_LEFT, Constants.MOTORS.MOTOR_DRIVE_REAR_LEFT,
@@ -44,11 +51,13 @@ public class Robot extends IterativeRobot {
 		
 		winch = new Winch(Constants.MOTORS.MOTOR_WINCH);
 		
-		shooter = new Shooter(Constants.MOTORS.MOTOR_SHOOTER_FEEDER, Constants.MOTORS.MOTOR_SHOOTER_TURRET, Constants.MOTORS.MOTOR_SHOOTER_FLYWHEEL, Constants.ANALOG.GYRO_ID);
+		shooter = new Shooter(Constants.MOTORS.MOTOR_SHOOTER_FEEDER, Constants.MOTORS.MOTOR_SHOOTER_TURRET, Constants.MOTORS.MOTOR_SHOOTER_FLYWHEEL, Constants.ANALOG.GYRO_ID, visionProcessing);
 		
 		prefs = Preferences.getInstance();
 		
 		//shooter.setPID(prefs.getDouble("TURRET_HORIZONTAL_P", 0), prefs.getDouble("TURRET_HORIZONTAL_I", 0), prefs.getDouble("TURRET_HORIZONTAL_D", 0));
+		
+		CameraServer.getInstance().startAutomaticCapture();
 	}
 
 	/**
@@ -68,7 +77,9 @@ public class Robot extends IterativeRobot {
 	
 	public void teleopInit() {
 		
-
+		visionProcessing.updateHSV();
+		visionProcessing.updateGoalPixelOffset();
+		shooter.updateTurretShootingErrorAllowance();
 		
 	}
 	
@@ -125,25 +136,43 @@ public class Robot extends IterativeRobot {
 		// Turret
 		///
 		
+		/*
+		// Shooter manual control
 		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_TURRET_FEEDER))
-			turret.spinFeeder();
+			shooter.feed();
 		else
-			turret.stopFeeder();
+			shooter.dontFeed();
 		
 		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_TURRET_FLYWHEEL))
-			turret.spinFlywheel();
+			shooter.shoot();
 		else
-			turret.stopFlywheel();
+			shooter.dontShoot();
+		
+		shooter.turn(joystick_left.getRawAxis(2));
+		*/
+		
+		
+		shooter.setFlywheelSetpoint((joystick_left.getRawAxis(Constants.MISC.AXIS_SLIDER)+ + 1) * 30);
+		
+		SmartDashboard.putNumber("Flywheel Setpoint RPS", (joystick_left.getRawAxis(Constants.MISC.AXIS_SLIDER)+ + 1) * 30);
+		SmartDashboard.putNumber("Flywheel RPS", shooter.getFlywheelRPS());
+		
+		
+		// Shooter automatic control
+		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_AIM_AND_SHOOT))
+			shooter.aimAndShoot();
+		else
+			shooter.dontAimAndShoot();
 		
 		//turret.turn(joystick_right.getRawAxis(Constants.JOYSTICK_RIGHT_TURRET_SPIN_AXIS));
 		
-		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_VISION_ENABLE))
-		{
-			turret.enableVisionTargeting();
-			turret.setSetpoint();
-		}
-		else
-			turret.disableVisionTargeting();
+//		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_VISION_ENABLE))
+//		{
+//			turret.enableVisionTargeting();
+//			turret.setSetpoint();
+//		}
+//		else
+//			turret.disableVisionTargeting();
 	}
 
 	/**

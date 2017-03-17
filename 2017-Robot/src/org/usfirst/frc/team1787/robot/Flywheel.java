@@ -8,7 +8,8 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 public class Flywheel {
 
 	private CANTalon talon_flywheel;
-	Encoder encoder;
+	private Encoder encoder;
+	private double setpointRps;
 	
 	public Flywheel(int talon_flywheel_id)
 	{
@@ -17,12 +18,13 @@ public class Flywheel {
 		this.encoder = new Encoder(Constants.DIO.ENCODER_FLYWHEEL_A, Constants.DIO.ENCODER_FLYWHEEL_B);
 		this.encoder.setPIDSourceType(PIDSourceType.kRate);
 		this.encoder.setDistancePerPulse(Constants.MISC.ENCODER_FLYWHEEL_DISTANCEPERPULSE);
+		this.setpointRps = Constants.SPEEDS.SPEED_FLYWHEEL_RPS;
 		
 	}
 	
 	public void run() {
 		
-		if (encoder.getRate() < Constants.SPEEDS.SPEED_FLYWHEEL_RPS)
+		if (encoder.getRate() < setpointRps)
 			talon_flywheel.set(Constants.SPEEDS.SPEED_FLYWHEEL_VOLTS);
 		else
 			talon_flywheel.set(0);
@@ -35,6 +37,12 @@ public class Flywheel {
 		
 	}
 	
+	public void setSetpointRPS(double rps)
+	{
+		setpointRps = rps;
+	}
 	
-	
+	public double getRPS() {
+		return encoder.getRate();
+	}
 }

@@ -34,7 +34,8 @@ public class Turret {
 		
 	}
 	
-	public void enableVisionTargeting() {
+	public void enableVisionTargeting()
+	{
 		
 		if (!vision_targeting_enabled)
 		{
@@ -44,7 +45,8 @@ public class Turret {
 	}
 	
 	
-	public void disableVisionTargeting() {
+	public void disableVisionTargeting()
+	{
 		
 		if (vision_targeting_enabled)
 		{
@@ -54,25 +56,42 @@ public class Turret {
 	}
 	
 	
-	public void setSetpoint() {
+	public void setSetpointPi()
+	{
 		
-		pidController.setSetpoint(gyro.getAngle() + SmartDashboard.getNumber("ERROR_DEGREES_HORIZONTAL", 0));
-		DriverStation.reportWarning(gyro.getAngle() + "", false);
+		setSetpoint(SmartDashboard.getNumber("ERROR_DEGREES_HORIZONTAL", 0));
 		
 	}
 	
+	
+	public void setSetpoint(double degrees_error)
+	{
+		pidController.setSetpoint(gyro.getAngle() + degrees_error);
+		DriverStation.reportWarning(gyro.getAngle() + "", false);
+	}
+	
 
-	public void turn(double speed) {
+	public void turn(double speed)
+	{
 		
 		talon_turret.set(speed);
 		
 	}
 	
-	public void setPID(double p, double i, double d) {
+	public void stop()
+	{
+		
+		talon_turret.set(0);
+		
+	}
+	
+	public void setPID(double p, double i, double d)
+	{
 		pidController.setPID(p, i, d);
 	}
 	
-	public double getDistance() {
+	public double getDistance()
+	{
 	
 		double angle = SmartDashboard.getNumber(Constants.VISION.ANGLE_TO_TARGET_STRING, 1);
 		if (Math.tan(angle) != 0)
@@ -80,6 +99,11 @@ public class Turret {
 		else
 			return -1;
 		
+	}
+	
+	public double getError()
+	{
+		return pidController.getError();
 	}
 	
 }
