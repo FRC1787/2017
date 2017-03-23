@@ -73,12 +73,14 @@ public final class Constants {
 		
 		// Joystick values
 		
+		public static final int JOYSTICK_DISABLED = 0;
+		
 		public static final int JOYSTICK_RIGHT_PICKUP_ARM_DEPLOY = 3;
 		public static final int JOYSTICK_RIGHT_PICKUP_ARM_RETRACT = 4;
 		public static final int JOYSTICK_RIGHT_PICKUP_ARM_INAKE = 1;
 		
 		public static final int JOYSTICK_RIGHT_WINCH_CLIMB = 2;
-		public static final int JOYSTICK_RIGHT_WINCH_UNCLIMB = 0;
+		public static final int JOYSTICK_RIGHT_WINCH_UNCLIMB = JOYSTICK_DISABLED;
 		
 		public static final int JOYSTICK_RIGHT_TURRET_FLYWHEEL = 14;
 		public static final int JOYSTICK_RIGHT_TURRET_FEEDER = 8;
@@ -87,8 +89,15 @@ public final class Constants {
 		
 		//public static final int JOYSTICK_RIGHT_VISION_ENABLE = 8;
 		
-		public static final int JOYSTICK_RIGHT_AIM_AND_SHOOT = 0;
+		public static final int JOYSTICK_LEFT_AIM_AND_SHOOT = 9;
 		
+		public static final int JOYSTICK_LEFT_AIM_1 = 5;
+		public static final int JOYSTICK_LEFT_AIM_2 = 8;
+		
+		public static final int JOYSTICK_LEFT_FLYWHEEL_RPS_INCREASE = 13;
+		public static final int JOYSTICK_LEFT_FLYWHEEL_RPS_DECREASE = 14;
+		
+		public static final int JOYSTICK_RIGHT_CAMERA_SWITCH = 10;
 		
 	}
 	
@@ -110,8 +119,9 @@ public final class Constants {
 		public static final double SPEED_FEEDER = -0.5;
 		
 		// Flywheel
-		public static final double SPEED_FLYWHEEL_RPS = 50; // approximately rotations/second
+		public static final double SPEED_FLYWHEEL_RPS_DEFAULT = 55; // approximately rotations/second
 		public static final double SPEED_FLYWHEEL_VOLTS = 1; // The value to spin if the flywheel speed is less than the setpoint
+		public static final double SPEED_FLYWHEEL_ADJUSTABLE_RANGE = 10; // The amount to be able to adjust the flywheel setpoint
 		
 	}
 	
@@ -159,7 +169,7 @@ public final class Constants {
 		public static final double TURRET_ALIGNMENT_SPEED_MIN = -.5;
 		public static final double TURRET_ALIGNMENT_SPEED_MAX = .5;
 		
-		public static final double TURRET_ALIGNMENT_TOLERANCE_ANGLE = 5;
+		public static final double TURRET_ALIGNMENT_TOLERANCE_ANGLE = 10;
 		
 		public static final boolean TURRET_ALIGNMENT_CONTINUOUS = false;
 		
@@ -167,20 +177,21 @@ public final class Constants {
 		
 		public static final String GOAL_PIXEL_OFFSET_LABEL = "GOAL_PIXEL_OFFSET";
 		
-		public static final String TURRET_SHOOTING_ERROR_ALLOWANCE_LABEL = "TURRET_SHOOTING_ERROR_ALLOWANCE";
-		public static final double TURRET_SHOOTING_ERROR_ALLOWANCE_BACKUP = 10;
-		
 		public static final double TARGET_HEIGHT = 86;
 		public static final String ANGLE_TO_TARGET_STRING = "angle_to_target";
 		
 		public static final String CAMERA_SHOOTER_NAME = "camera_shooter";
 		public static final String CAMERA_GEAR_NAME = "camera_gear";
 		
-		public static final int CAMERA_WIDTH = 640;
-		public static final int CAMERA_HEIGHT = 480;
-		public static final int CAMERA_WHITEBALANCE = WhiteBalance.kFixedIndoor;
-		public static final int CAMERA_BRIGHTNESS = 100;
-		public static final int CAMERA_EXPOSURE = 0;
+		public static final int CAMERA_WIDTH = 320;
+		public static final int CAMERA_HEIGHT = 240;
+		
+		public static final int CAMERA_SHOOTER_WHITEBALANCE = WhiteBalance.kFixedIndoor;
+		public static final int CAMERA_SHOOTER_BRIGHTNESS = 100;
+		public static final int CAMERA_SHOOTER_EXPOSURE = 2;
+		public static final int CAMERA_SHOOTER_FPS = 25;
+		
+		public static final int CAMERA_GEAR_BRIGHTNESS = 50;
 		
 		public static final String HSV_LOW_H = "HSV_LOW_H";
 		public static final String HSV_LOW_S = "HSV_LOW_S";
@@ -191,12 +202,15 @@ public final class Constants {
 		
 		public static final int MORPHOLOGY_KERNEL_SIZE = 5;
 		
-		public static final int CONTOUR_MIN_AREA = 10;
+		public static final int CONTOUR_MIN_AREA = 50;
 		
 		public static final double TAPE_TARGET_LENGTH_WIDTH_RATIO = 3.75;
 		public static final double LENGTH_WIDTH_RATIO_TOLERABLE_ERROR = .25;
+		public static final String LENGTH_WIDTH_RATIO_TOLERABLE_ERROR_LABEL = "LENGTH_WIDTH_RATIO_TOLERABLE_ERROR";
 		
 		public static final double DEGREES_PER_PIXEL = 0.15;
+		
+		//public static final
 		
 	}
 	
@@ -207,10 +221,18 @@ public final class Constants {
 	
 		public static final int AXIS_SLIDER = 3;
 		
-		public static final double ENCODER_FLYWHEEL_DISTANCEPERPULSE = 0.00048828125;
+		public static final double ENCODER_FLYWHEEL_DISTANCE_PER_PULSE = 0.00048828125;
 		
-		public static final double FLYWHEEL_STARTUP_TIME = 1.5; // In seconds
-	
+		public static final double FLYWHEEL_RPS_ACCEPTABLE_ERROR = 50;
+		
+		public static final double FLYWHEEL_RPS_CHANGE_RATE = .25;
+		
+		public static final double DRIVE_DISTANCE_PER_PULSE = 0.009817707144979;
+		
+		public static final double DRIVE_DISTANCE_P = 0.01;
+		public static final double DRIVE_DISTANCE_I = 0;
+		public static final double DRIVE_DISTANCE_D = 0;
+		public static final double DRIVE_DISTANCE_F = 0;
 	}
 	
 }

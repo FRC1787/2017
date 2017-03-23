@@ -12,22 +12,15 @@ public class Shooter {
 	
 	private Preferences prefs;
 	
-	private double turret_shooting_error_allowance;
-	private Timer flywheelStartupTimer;
 	
 	public Shooter(int talon_feeder_id, int talon_turret_id, int talon_flywheel_id, int gyro_id, VisionProcessing visionProcessing)
 	{
-		
 		feeder = new Feeder(talon_feeder_id);
 		turret = new Turret(talon_turret_id, gyro_id);
 		flywheel = new Flywheel(talon_flywheel_id);
 		this.visionProcessing = visionProcessing;
 		
-		prefs = Preferences.getInstance();
-		
-		updateTurretShootingErrorAllowance();
-		flywheelStartupTimer = new Timer();
-		
+		prefs = Preferences.getInstance();		
 	}
 	
 	public void feed()
@@ -65,10 +58,10 @@ public class Shooter {
 		turret.stop();
 	}
 	
-	public void setFlywheelSetpoint(double rps)
-	{
-		flywheel.setSetpointRPS(rps);
-	}
+//	public void setFlywheelSetpoint(double rps)
+//	{
+//		flywheel.setSetpointRPS(rps);
+//	}
 	
 	public double getFlywheelRPS()
 	{
@@ -77,22 +70,24 @@ public class Shooter {
 	
 	public void aimAndShoot()
 	{
+		System.out.println("Aimandshooting");
 		// Set the andle setpoint for the turret
 		turret.setSetpoint(visionProcessing.getHorizontalDegreesError());
-		
+		System.out.println(turret.onTarget() + "");
 		// Set turret to track the target
 		turret.enableVisionTargeting();
 		
 		// If error is small enough
-		if (Math.abs(turret.getError()) < turret_shooting_error_allowance)
+		if (turret.onTarget())
 		{
 			// Start flywheel
+			//double approprateFlywheelSpeed = 0;
+			//flywheel.setSetpointRPS(approprateFlywheelSpeed);
 			flywheel.run();
-			flywheelStartupTimer.start();
-			
-			// If enough time has passed
-			if (flywheelStartupTimer.get() >= Constants.MISC.FLYWHEEL_STARTUP_TIME)
+			if (flywheel.onTarget())
 				feeder.feed();
+			else
+				feeder.stop();
 		}
 		else
 		{
@@ -106,12 +101,37 @@ public class Shooter {
 		turret.stop();
 		flywheel.stop();
 		feeder.stop();
-		flywheelStartupTimer.reset();
 	}
-
-	public void updateTurretShootingErrorAllowance()
+	
+	public void setFlywheelAdjust(double rps)
 	{
-		turret_shooting_error_allowance = prefs.getDouble(Constants.VISION.TURRET_SHOOTING_ERROR_ALLOWANCE_LABEL,
-														  Constants.VISION.TURRET_SHOOTING_ERROR_ALLOWANCE_BACKUP);
+		flywheel.setAdjust(rps);
+	}
+	
+	public double getFLywheelSetpointRps()
+	{
+		return flywheel.getSetpoint();
+	}
+	
+	public void aim()
+	{
+		turret.enableVisionTargeting();
+		turret.setSetpoint(visionProcessing.getHorizontalDegreesError());
+	}
+	
+	public void updateTurretPIDConstants()
+	{
+		turret.updatePIDConstants();
+	}
+	
+	public void updateTurretLengthWidthRatioTolerableError()
+	{
+		turret.updateLengthWidthRatioTolerableError();
+	}
+	
+	public void dontAim()
+	{
+		turret.disableVisionTargeting();
+		turret.stop();
 	}
 }
