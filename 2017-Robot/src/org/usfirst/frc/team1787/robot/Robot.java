@@ -16,24 +16,27 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 	
-	Joystick joystick_right;
-	Joystick joystick_left;
+	private Joystick joystick_right;
+	private Joystick joystick_left;
 	
-	VisionProcessing visionProcessing;
+	private VisionProcessing visionProcessing;
 	
-	DriveTrain driveTrain;
-	PickupArm pickupArm;
-	Winch winch;
-	Shooter shooter;
+	private DriveTrain driveTrain;
+	private PickupArm pickupArm;
+	private Winch winch;
+	private Shooter shooter;
 	
-	Preferences prefs;
+	private Preferences prefs;
 	
-	Timer autoTimer;
+	private Timer autoTimer;
+	private Timer feederTimer;
 	
-	double flywheelAdjust;
-	boolean flywheelAdjustButtonPressed = false;
+	private double flywheelAdjust;
+	private boolean flywheelAdjustButtonPressed = false;
 	
-	boolean cameraSwitchButtonPressed = false;
+	private boolean cameraSwitchButtonPressed = false;
+	
+	private double joystickRightSpinLastPosition = 0;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -68,6 +71,7 @@ public class Robot extends IterativeRobot {
 		//CameraServer.getInstance().startAutomaticCapture();
 		
 		autoTimer = new Timer();
+		feederTimer = new Timer();
 		
 		
 	}
@@ -104,7 +108,7 @@ public class Robot extends IterativeRobot {
 	public void teleopInit() {
 		
 		visionProcessing.updateHSV();
-		visionProcessing.updateGoalPixelOffset();
+		//visionProcessing.updateGoalPixelOffset();
 		shooter.updateTurretPIDConstants();
 		shooter.updateTurretLengthWidthRatioTolerableError();
 		
@@ -139,13 +143,13 @@ public class Robot extends IterativeRobot {
 		///
 		
 		// Deploying and retracting
-		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_PICKUP_ARM_DEPLOY))
+		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_PICKUP_DOWN))
 			pickupArm.deploy();
-		else if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_PICKUP_ARM_RETRACT))
+		else if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_PICKUP_UP))
 			pickupArm.retract();
 		
 		// Intake
-		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_PICKUP_ARM_INAKE))
+		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_INTAKE))
 			pickupArm.intake();
 		else
 			pickupArm.stopIntake();
@@ -158,40 +162,58 @@ public class Robot extends IterativeRobot {
 		
 		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_WINCH_CLIMB))
 			winch.climb();
-		else if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_WINCH_UNCLIMB))
-			winch.unclimb();
 		else
 			winch.stop();
 		
 	
 		///
-		// Turret
+		// Shooter
 		///
 		
 		
-		// Shooter manual control
-		/*if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_TURRET_FEEDER))
-			shooter.feed();
+		// Turret spinning
+		if (joystick_left.getRawAxis(2) != 0)
+			shooter.turn(joystick_left.getRawAxis(2));
+		else if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_VISIONTARGET))
+			shooter.aim();
+		else if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_SHOOT))
+			shooter.aim();
 		else
-			shooter.dontFeed();
+			shooter.dontAim();
 		
-		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_TURRET_FLYWHEEL))
+		
+		// Feeder
+		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_SHOOT))
+		{
+			if (feederTimer.get() == 0)
+				feederTimer.start();
+			if (feederTimer.get() > Constants.MISC.SHOOTING_FLYWHEEL_DELAY)
+				shooter.feed();
+		}
+		else
+		{
+			feederTimer.reset();
+			shooter.dontFeed();
+		}
+		
+		
+		// Flywheel
+		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_SHOOT))
 			shooter.shoot();
 		else
-			shooter.dontShoot();*/
-		
-		//shooter.turn(joystick_left.getRawAxis(2));
+			shooter.dontShoot();
 		
 		
+
 		// Adjust flywheel speed
 		if (!flywheelAdjustButtonPressed)
 		{
-			if (joystick_left.getRawButton(Constants.JOYSTICKS.JOYSTICK_LEFT_FLYWHEEL_RPS_INCREASE))
+			if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_FLYWHEEL_FASTER))
 			{
 				flywheelAdjustButtonPressed = true;
 				flywheelAdjust += Constants.MISC.FLYWHEEL_RPS_CHANGE_RATE;
 			}
-			else if (joystick_left.getRawButton(Constants.JOYSTICKS.JOYSTICK_LEFT_FLYWHEEL_RPS_DECREASE))
+			else if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_FLYWHEEL_SLOWER))
 			{
 				flywheelAdjustButtonPressed = true;
 				flywheelAdjust -= Constants.MISC.FLYWHEEL_RPS_CHANGE_RATE;
@@ -199,8 +221,8 @@ public class Robot extends IterativeRobot {
 		}
 		else
 		{
-			if (!(joystick_left.getRawButton(Constants.JOYSTICKS.JOYSTICK_LEFT_FLYWHEEL_RPS_INCREASE) ||
-				joystick_left.getRawButton(Constants.JOYSTICKS.JOYSTICK_LEFT_FLYWHEEL_RPS_DECREASE)))
+			if (!(joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_FLYWHEEL_FASTER) ||
+				joystick_left.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_FLYWHEEL_SLOWER)))
 				flywheelAdjustButtonPressed = false;
 		}
 		shooter.setFlywheelAdjust(flywheelAdjust);
@@ -211,50 +233,33 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Flywheel RPS", shooter.getFlywheelRPS());
 		SmartDashboard.putNumber("Flywheel Error", shooter.getFLywheelSetpointRps() - shooter.getFlywheelRPS());
 		
-		
-		
-		// Shooter automatic control
-		/*if (joystick_left.getRawButton(Constants.JOYSTICKS.JOYSTICK_LEFT_AIM_AND_SHOOT))
-			shooter.aimAndShoot();
-		else if (joystick_left.getRawButton(Constants.JOYSTICKS.JOYSTICK_LEFT_AIM_2))
-			shooter.aim();
-		else
-			shooter.dontAimAndShoot();*/
 
 		
-		// Shooter auto manual hybrid control
-		if (joystick_left.getRawButton(Constants.JOYSTICKS.JOYSTICK_LEFT_AIM_2))
-			shooter.aim();
-		else
-			shooter.dontAim();
-		
-		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_TURRET_FEEDER))
-			shooter.feed();
-		else
-			shooter.dontFeed();
-		
-		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_TURRET_FLYWHEEL))
-			shooter.shoot();
-		else
-			shooter.dontShoot();
-		
-		
-		///
-		// Vision
-		///
-		
-		
-		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_CAMERA_SWITCH) && !cameraSwitchButtonPressed)
+		// Switching camera
+		if (joystick_left.getRawButton(Constants.JOYSTICKS.JOYSTICK_LEFT_CAMERA_SWITCH) && !cameraSwitchButtonPressed)
 		{
 			cameraSwitchButtonPressed = true;
 			visionProcessing.switchCamera();
 		}
-		if (!joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_CAMERA_SWITCH))
+		if (!joystick_left.getRawButton(Constants.JOYSTICKS.JOYSTICK_LEFT_CAMERA_SWITCH))
 			cameraSwitchButtonPressed = false;
 
 		visionProcessing.sendCurrentCamera();
 		
 		
+		// Adjust turret aim
+		if (joystick_right.getRawAxis(2) > Constants.MISC.JOYSTICK_RIGHT_SHOOTER_ADJUST_ACTIVATION_DISTANCE &&
+			joystickRightSpinLastPosition < Constants.MISC.JOYSTICK_RIGHT_SHOOTER_ADJUST_ACTIVATION_DISTANCE)
+		{
+			shooter.incrementTurretAdjust();
+		}
+		else if (joystick_right.getRawAxis(2) < -Constants.MISC.JOYSTICK_RIGHT_SHOOTER_ADJUST_ACTIVATION_DISTANCE &&
+				 joystickRightSpinLastPosition > -Constants.MISC.JOYSTICK_RIGHT_SHOOTER_ADJUST_ACTIVATION_DISTANCE)
+		{
+			shooter.decrementTurretAdjust();
+		}
+		joystickRightSpinLastPosition = joystick_left.getRawAxis(2);
+		SmartDashboard.putNumber("GOAL_PIXEL_ADJUST", shooter.getTurretAdjust());
 		
 	}
 

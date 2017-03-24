@@ -44,7 +44,7 @@ public class VisionProcessing {
 	// If the camera is off, and we need to adjust to a point
 	// not exactly centered in the middle of the camera, this
 	// is the value to change
-	private double goal_pixel_offset;
+	private int goal_pixel_offset = Constants.VISION.GOAL_PIXEL_OFFSET_DEFAULT;
 	
 	private String currentCamera = Constants.VISION.CAMERA_SHOOTER_NAME;
 	private Mat currentCameraFrame;
@@ -188,7 +188,7 @@ public class VisionProcessing {
 	
 	public void updateGoalPixelOffset()
 	{
-		goal_pixel_offset = prefs.getDouble(Constants.VISION.GOAL_PIXEL_OFFSET_LABEL, 0);
+		goal_pixel_offset = (int)prefs.getDouble(Constants.VISION.GOAL_PIXEL_OFFSET_LABEL, 0);
 	}
 	
 	public void sendCurrentCamera()
@@ -217,4 +217,18 @@ public class VisionProcessing {
 			currentCamera = Constants.VISION.CAMERA_SHOOTER_NAME;
 	}
 	
+	public void incrementGoalPixelOffset()
+	{
+		goal_pixel_offset += Constants.VISION.GOAL_PIXEL_OFFSET_ADJUST_AMOUNT;
+	}
+	
+	public void decrementGoalPixelOffset()
+	{
+		goal_pixel_offset -= Constants.VISION.GOAL_PIXEL_OFFSET_ADJUST_AMOUNT;
+	}
+	
+	public int getGoalPixelOffset()
+	{
+		return goal_pixel_offset;
+	}
 }

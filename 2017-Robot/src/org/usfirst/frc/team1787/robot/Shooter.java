@@ -68,7 +68,7 @@ public class Shooter {
 		return flywheel.getRPS();
 	}
 	
-	public void aimAndShoot()
+	/*public void aimAndShoot()
 	{
 		System.out.println("Aimandshooting");
 		// Set the andle setpoint for the turret
@@ -93,15 +93,15 @@ public class Shooter {
 		{
 			feeder.stop();
 		}
-	}
+	}*/
 	
-	public void dontAimAndShoot()
+	/*public void dontAimAndShoot()
 	{
 		turret.disableVisionTargeting();
 		turret.stop();
 		flywheel.stop();
 		feeder.stop();
-	}
+	}*/
 	
 	public void setFlywheelAdjust(double rps)
 	{
@@ -133,5 +133,20 @@ public class Shooter {
 	{
 		turret.disableVisionTargeting();
 		turret.stop();
+	}
+
+	public void incrementTurretAdjust()
+	{
+		visionProcessing.incrementGoalPixelOffset();
+	}
+	
+	public void decrementTurretAdjust()
+	{
+		visionProcessing.decrementGoalPixelOffset();
+	}
+	
+	public int getTurretAdjust()
+	{
+		return visionProcessing.getGoalPixelOffset();
 	}
 }

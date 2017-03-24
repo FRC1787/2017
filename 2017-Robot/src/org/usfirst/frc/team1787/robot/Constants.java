@@ -72,32 +72,55 @@ public final class Constants {
 		public static final int JOYSTICK_LEFT_ID = 1;
 		
 		// Joystick values
+		public static final int JOYSTICK_RIGHT_SHOOT = 1;
+		public static final int JOYSTICK_RIGHT_INTAKE= 2;
+		public static final int JOYSTICK_RIGHT_PICKUP_DOWN = 3;
+		public static final int JOYSTICK_RIGHT_PICKUP_UP = 4;
+		public static final int JOYSTICK_RIGHT_FLYWHEEL_FASTER = 7;
+		public static final int JOYSTICK_RIGHT_FLYWHEEL_SLOWER = 8;
+		public static final int JOYSTICK_RIGHT_VISIONTARGET = 10;
+		public static final int JOYSTICK_RIGHT_WINCH_CLIMB = 14;
 		
-		public static final int JOYSTICK_DISABLED = 0;
+		public static final int JOYSTICK_LEFT_CAMERA_SWITCH = 14;
 		
-		public static final int JOYSTICK_RIGHT_PICKUP_ARM_DEPLOY = 3;
-		public static final int JOYSTICK_RIGHT_PICKUP_ARM_RETRACT = 4;
-		public static final int JOYSTICK_RIGHT_PICKUP_ARM_INAKE = 1;
 		
-		public static final int JOYSTICK_RIGHT_WINCH_CLIMB = 2;
-		public static final int JOYSTICK_RIGHT_WINCH_UNCLIMB = JOYSTICK_DISABLED;
 		
-		public static final int JOYSTICK_RIGHT_TURRET_FLYWHEEL = 14;
-		public static final int JOYSTICK_RIGHT_TURRET_FEEDER = 8;
 		
-		//public static final int JOYSTICK_RIGHT_TURRET_SPIN_AXIS = 2;
 		
-		//public static final int JOYSTICK_RIGHT_VISION_ENABLE = 8;
 		
-		public static final int JOYSTICK_LEFT_AIM_AND_SHOOT = 9;
 		
-		public static final int JOYSTICK_LEFT_AIM_1 = 5;
-		public static final int JOYSTICK_LEFT_AIM_2 = 8;
 		
-		public static final int JOYSTICK_LEFT_FLYWHEEL_RPS_INCREASE = 13;
-		public static final int JOYSTICK_LEFT_FLYWHEEL_RPS_DECREASE = 14;
 		
-		public static final int JOYSTICK_RIGHT_CAMERA_SWITCH = 10;
+		
+		
+		
+		
+		// Old joystick values
+//		public static final int JOYSTICK_DISABLED = 0;
+//		
+//		public static final int JOYSTICK_RIGHT_PICKUP_ARM_DEPLOY = 3;
+//		public static final int JOYSTICK_RIGHT_PICKUP_ARM_RETRACT = 4;
+//		public static final int JOYSTICK_RIGHT_PICKUP_ARM_INAKE = 1;
+//		
+//		public static final int JOYSTICK_RIGHT_WINCH_CLIMB = 2;
+//		public static final int JOYSTICK_RIGHT_WINCH_UNCLIMB = JOYSTICK_DISABLED;
+//		
+//		public static final int JOYSTICK_RIGHT_TURRET_FLYWHEEL = 14;
+//		public static final int JOYSTICK_RIGHT_TURRET_FEEDER = 8;
+//		
+//		//public static final int JOYSTICK_RIGHT_TURRET_SPIN_AXIS = 2;
+//		
+//		//public static final int JOYSTICK_RIGHT_VISION_ENABLE = 8;
+//		
+//		public static final int JOYSTICK_LEFT_AIM_AND_SHOOT = 9;
+//		
+//		public static final int JOYSTICK_LEFT_AIM_1 = 5;
+//		public static final int JOYSTICK_LEFT_AIM_2 = 8;
+//		
+//		public static final int JOYSTICK_LEFT_FLYWHEEL_RPS_INCREASE = 13;
+//		public static final int JOYSTICK_LEFT_FLYWHEEL_RPS_DECREASE = 14;
+//		
+//		public static final int JOYSTICK_RIGHT_CAMERA_SWITCH = 10;
 		
 	}
 	
@@ -210,7 +233,8 @@ public final class Constants {
 		
 		public static final double DEGREES_PER_PIXEL = 0.15;
 		
-		//public static final
+		public static final int GOAL_PIXEL_OFFSET_DEFAULT = 0;
+		public static final int GOAL_PIXEL_OFFSET_ADJUST_AMOUNT = 5;
 		
 	}
 	
@@ -233,6 +257,10 @@ public final class Constants {
 		public static final double DRIVE_DISTANCE_I = 0;
 		public static final double DRIVE_DISTANCE_D = 0;
 		public static final double DRIVE_DISTANCE_F = 0;
+		
+		public static final int SHOOTING_FLYWHEEL_DELAY = 3;
+		
+		public static final double JOYSTICK_RIGHT_SHOOTER_ADJUST_ACTIVATION_DISTANCE = 0.5;
 	}
 	
 }
