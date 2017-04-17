@@ -5,6 +5,7 @@ import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,6 +34,8 @@ public class DriveTrain {
 	// PID Controller for driving a distance
 	private PIDController pidControllerDriveRight;
 	private PIDController pidControllerDriveLeft;
+	
+	private Preferences prefs;
 	
 	public DriveTrain(int motor_front_right_id, int motor_rear_right_id,
 					  int motor_front_left_id, int motor_rear_left_id,
@@ -63,6 +66,8 @@ public class DriveTrain {
 		this.pidControllerDriveLeft = new PIDController(Constants.MISC.DRIVE_DISTANCE_P, Constants.MISC.DRIVE_DISTANCE_I,
 				 Constants.MISC.DRIVE_DISTANCE_D, Constants.MISC.DRIVE_DISTANCE_F,
 				 encoder_left, pidOutput_left);
+		
+		this.prefs = Preferences.getInstance();
 	}
 	/**
 	 * Drive forwards
@@ -111,6 +116,30 @@ public class DriveTrain {
 	{
 		SmartDashboard.putNumber("Encoder Drive Right Ticks", encoder_right.get());
 		SmartDashboard.putNumber("Encoder Drive Left Ticks", encoder_left.get());
+	}
+	
+	
+	public double getLeftDriveDistance()
+	{
+		return encoder_left.getDistance();
+	}
+	
+	
+	public double getRightDriveDistance()
+	{
+		return encoder_right.getDistance();
+	}
+	
+	public void resetEncoders()
+	{
+		encoder_left.reset();
+		encoder_right.reset();
+	}
+	
+	public void updateEncodersDPP()
+	{
+		encoder_right.setDistancePerPulse(prefs.getDouble("Drive DPP", 1));
+		encoder_left.setDistancePerPulse(prefs.getDouble("Drive DPP", 1));
 	}
 	
 	/**

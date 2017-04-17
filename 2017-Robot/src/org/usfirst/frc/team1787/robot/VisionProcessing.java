@@ -65,6 +65,7 @@ public class VisionProcessing {
 		
 		camera_gear.setResolution(Constants.VISION.CAMERA_WIDTH, Constants.VISION.CAMERA_HEIGHT);
 		camera_gear.setBrightness(Constants.VISION.CAMERA_GEAR_BRIGHTNESS);
+		camera_gear.setFPS(5);
 		
 		sink_shooter = CameraServer.getInstance().getVideo(camera_shooter);
 		sink_gear = CameraServer.getInstance().getVideo(camera_gear);

@@ -34,7 +34,8 @@ public final class Constants {
 		public static final int MOTOR_SHOOTER_TURRET = 1;
 		
 		// Winch
-		public static final int MOTOR_WINCH = 4;
+		public static final int MOTOR_WINCH_1 = 4;
+		public static final int MOTOR_WINCH_2 = 10;
 		
 	}
 	
@@ -48,8 +49,8 @@ public final class Constants {
 		public static final int PCM_SHIFTER_ID = 0;
 		
 		// Shifter states
-		public static final boolean SHIFTER_HIGH = true;
-		public static final boolean SHIFTR_LOW = false;
+		public static final boolean SHIFTER_HIGH = false;
+		public static final boolean SHIFTR_LOW = true;
 		
 		// Pickup Arm
 		public static final int PCM_PICKUP_ARM_DEPLOYED_ID = 1;
@@ -79,9 +80,10 @@ public final class Constants {
 		public static final int JOYSTICK_RIGHT_FLYWHEEL_FASTER = 7;
 		public static final int JOYSTICK_RIGHT_FLYWHEEL_SLOWER = 8;
 		public static final int JOYSTICK_RIGHT_VISIONTARGET = 10;
-		public static final int JOYSTICK_RIGHT_WINCH_CLIMB = 14;
+		//public static final int JOYSTICK_RIGHT_WINCH_CLIMB = 14;
 		
 		public static final int JOYSTICK_LEFT_CAMERA_SWITCH = 14;
+		public static final int JOYSTICK_LEFT_WINCH_CLIMB = 8;
 		
 		
 		
@@ -139,10 +141,10 @@ public final class Constants {
 		public static final double SPEED_WINCH_UNCLIMB = .5;
 		
 		// Feeder
-		public static final double SPEED_FEEDER = -0.5;
+		public static final double SPEED_FEEDER = -0.42;
 		
 		// Flywheel
-		public static final double SPEED_FLYWHEEL_RPS_DEFAULT = 55; // approximately rotations/second
+		public static final double SPEED_FLYWHEEL_RPS_DEFAULT = 62; // approximately rotations/second
 		public static final double SPEED_FLYWHEEL_VOLTS = 1; // The value to spin if the flywheel speed is less than the setpoint
 		public static final double SPEED_FLYWHEEL_ADJUSTABLE_RANGE = 10; // The amount to be able to adjust the flywheel setpoint
 		
@@ -233,8 +235,8 @@ public final class Constants {
 		
 		public static final double DEGREES_PER_PIXEL = 0.15;
 		
-		public static final int GOAL_PIXEL_OFFSET_DEFAULT = 0;
-		public static final int GOAL_PIXEL_OFFSET_ADJUST_AMOUNT = 5;
+		public static final int GOAL_PIXEL_OFFSET_DEFAULT = 54;
+		public static final int GOAL_PIXEL_OFFSET_ADJUST_AMOUNT = 3;
 		
 	}
 	
@@ -251,16 +253,17 @@ public final class Constants {
 		
 		public static final double FLYWHEEL_RPS_CHANGE_RATE = .25;
 		
-		public static final double DRIVE_DISTANCE_PER_PULSE = 0.009817707144979;
+		public static final double DRIVE_DISTANCE_PER_PULSE = 0.01249846;
 		
 		public static final double DRIVE_DISTANCE_P = 0.01;
 		public static final double DRIVE_DISTANCE_I = 0;
 		public static final double DRIVE_DISTANCE_D = 0;
 		public static final double DRIVE_DISTANCE_F = 0;
 		
-		public static final int SHOOTING_FLYWHEEL_DELAY = 3;
+		public static final int SHOOTING_FLYWHEEL_DELAY = 2;
 		
-		public static final double JOYSTICK_RIGHT_SHOOTER_ADJUST_ACTIVATION_DISTANCE = 0.5;
+		public static final double JOYSTICK_RIGHT_SHOOTER_ADJUST_ACTIVATION_DISTANCE = 0.75;
+		
 	}
 	
 }

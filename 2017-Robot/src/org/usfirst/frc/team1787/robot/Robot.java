@@ -60,7 +60,7 @@ public class Robot extends IterativeRobot {
 		
 		pickupArm = new PickupArm(Constants.PNEUMATICS.PCM_PICKUP_ARM_DEPLOYED_ID, Constants.PNEUMATICS.PCM_PICKUP_ARM_RETRACTED_ID, Constants.MOTORS.MOTOR_PICKUP_ARM_SPINNER);
 		
-		winch = new Winch(Constants.MOTORS.MOTOR_WINCH);
+		winch = new Winch(Constants.MOTORS.MOTOR_WINCH_1, Constants.MOTORS.MOTOR_WINCH_2);
 		
 		shooter = new Shooter(Constants.MOTORS.MOTOR_SHOOTER_FEEDER, Constants.MOTORS.MOTOR_SHOOTER_TURRET, Constants.MOTORS.MOTOR_SHOOTER_FLYWHEEL, Constants.ANALOG.GYRO_ID, visionProcessing);
 		
@@ -81,8 +81,13 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		
+		/*autoTimer.reset();
 		autoTimer.start();
-		driveTrain.setGear(0);
+		driveTrain.setGear(0);*/
+		
+		driveTrain.updateEncodersDPP();
+		driveTrain.resetEncoders();
 	}
 
 	/**
@@ -90,16 +95,22 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		System.out.println("timer: " + autoTimer.get());
 		
-		
-		//autoTimer.start();
-		if (autoTimer.get() < 9)
+		/*if (autoTimer.get() < 9)
 			driveTrain.drive(-0.5);
 		else
 		{
 			driveTrain.drive(0);
 			autoTimer.stop();
-		}
+		}*/
+		
+		if (driveTrain.getLeftDriveDistance() < 17.27)
+			driveTrain.drive(-0.5);
+		else
+			driveTrain.drive(0);
+		
+		System.out.println("Left Drive Distance: " + driveTrain.getLeftDriveDistance());
 		
 		
 	}
@@ -160,7 +171,7 @@ public class Robot extends IterativeRobot {
 		// Winch
 		///
 		
-		if (joystick_right.getRawButton(Constants.JOYSTICKS.JOYSTICK_RIGHT_WINCH_CLIMB))
+		if (joystick_left.getRawButton(Constants.JOYSTICKS.JOYSTICK_LEFT_WINCH_CLIMB))
 			winch.climb();
 		else
 			winch.stop();
@@ -232,7 +243,6 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Flywheel Setpoint RPS", shooter.getFLywheelSetpointRps());
 		SmartDashboard.putNumber("Flywheel RPS", shooter.getFlywheelRPS());
 		SmartDashboard.putNumber("Flywheel Error", shooter.getFLywheelSetpointRps() - shooter.getFlywheelRPS());
-		
 
 		
 		// Switching camera
@@ -245,7 +255,7 @@ public class Robot extends IterativeRobot {
 			cameraSwitchButtonPressed = false;
 
 		visionProcessing.sendCurrentCamera();
-		
+		//visionProcessing.sendHSVFilteredImage();
 		
 		// Adjust turret aim
 		if (joystick_right.getRawAxis(2) > Constants.MISC.JOYSTICK_RIGHT_SHOOTER_ADJUST_ACTIVATION_DISTANCE &&
@@ -258,11 +268,17 @@ public class Robot extends IterativeRobot {
 		{
 			shooter.decrementTurretAdjust();
 		}
-		joystickRightSpinLastPosition = joystick_left.getRawAxis(2);
+		joystickRightSpinLastPosition = joystick_right.getRawAxis(2);
 		SmartDashboard.putNumber("GOAL_PIXEL_ADJUST", shooter.getTurretAdjust());
 		
 	}
 
+	public void testInit()
+	{
+		driveTrain.resetEncoders();
+	}
+	
+	
 	/**
 	 * This function is called periodically during test mode
 	 */
